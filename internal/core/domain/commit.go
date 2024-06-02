@@ -1,5 +1,6 @@
 package domain
 
 type Commit struct {
-	CommitType CommitType
+	CommitType    CommitType
+	CommitMessage string
 }

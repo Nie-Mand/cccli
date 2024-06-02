@@ -10,7 +10,6 @@ import (
 
 func main() {
 	p := tea.NewProgram(models.Init())
-	p.SetWindowTitle("Conventional Commits CLI")
 	if _, err := p.Run(); err != nil {
 		fmt.Printf("Alas, there's been an error: %v", err)
 		os.Exit(1)
