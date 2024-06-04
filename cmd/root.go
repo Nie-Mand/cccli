@@ -51,7 +51,7 @@ var rootCmd = &cobra.Command{
 			return
 		}
 
-		log.Info("Commit successful")
+		log.Info("Commited 🚀")
 	},
 }
 

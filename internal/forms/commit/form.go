@@ -81,7 +81,7 @@ func (f *CommitForm) makeForm() *huh.Form {
 		huh.NewGroup(
 			f.makeCommitEmojiInput(),
 		),
-	)
+	).WithKeyMap(f.keyBindings())
 }
 
 type CommitFormOption func(*CommitForm)
