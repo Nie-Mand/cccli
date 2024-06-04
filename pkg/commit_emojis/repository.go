@@ -2,7 +2,6 @@ package commitemojis
 
 import (
 	"encoding/json"
-	"os"
 
 	"github.com/charmbracelet/log"
 
@@ -41,19 +40,11 @@ func (r *CommitEmojiRepository) List() []domain.CommitEmoji {
 }
 
 func (r *CommitEmojiRepository) load() error {
-	filePath := "pkg/commit_emojis/emojis.json"
-
-	file, err := os.Open(filePath)
-
-	if err != nil {
-		panic(err)
-	}
-
-	defer file.Close()
+	file := emojisJson
 
 	loadedEmojis := []EmojiModel{}
 
-	err = json.NewDecoder(file).Decode(&loadedEmojis)
+	err := json.Unmarshal([]byte(file), &loadedEmojis)
 
 	if err != nil {
 		panic(err)

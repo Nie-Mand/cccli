@@ -1,3 +1,6 @@
+package commitemojis
+
+var emojisJson = `
 [
   {
     "emoji": "🎨",
@@ -584,3 +587,4 @@
     "semver": null
   }
 ]
+`
