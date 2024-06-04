@@ -1,9 +1,9 @@
 package cmd
 
 import (
-	"fmt"
-	"log"
 	"os"
+
+	"github.com/charmbracelet/log"
 
 	commitemojis "github.com/Nie-Mand/cccli/pkg/commit_emojis"
 	committypes "github.com/Nie-Mand/cccli/pkg/commit_types"
@@ -24,29 +24,30 @@ var rootCmd = &cobra.Command{
 		)
 
 		if err != nil {
-			log.Fatal(err)
+			log.Error(err)
+			return
 		}
 
 		err = form.Run()
 		if err != nil {
-			log.Fatal(err)
+			log.Error(err)
+			return
 		}
 
 		err = utils.Commit(form.Commit.String())
 
 		if err != nil {
-			log.Fatal(err)
+			log.Error(err)
+			return
 		}
 
-		fmt.Println("Commit successful")
-
-		os.Exit(0)
+		log.Info("Commit successful")
 	},
 }
 
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
-		fmt.Println(err)
+		log.Error(err)
 		os.Exit(1)
 	}
 }
