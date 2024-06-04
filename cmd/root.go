@@ -5,6 +5,7 @@ import (
 
 	"github.com/charmbracelet/log"
 
+	changedfiles "github.com/Nie-Mand/cccli/pkg/changed_files"
 	commitemojis "github.com/Nie-Mand/cccli/pkg/commit_emojis"
 	committypes "github.com/Nie-Mand/cccli/pkg/commit_types"
 
@@ -21,6 +22,7 @@ var rootCmd = &cobra.Command{
 		form, err := commit.NewCommitForm(
 			commit.WithCommitTypeGateway(committypes.NewCommitTypeRepository()),
 			commit.WithCommitEmojiGateway(commitemojis.NewCommitEmojiRepository()),
+			commit.WithChangedFilesGateway(changedfiles.NewChangedFilesRepository()),
 		)
 
 		if err != nil {
@@ -31,6 +33,14 @@ var rootCmd = &cobra.Command{
 		err = form.Run()
 		if err != nil {
 			log.Error(err)
+			return
+		}
+
+		err = utils.Add(form.Commit.FilesChanged...)
+
+		if err != nil {
+			log.Error(err)
+
 			return
 		}
 

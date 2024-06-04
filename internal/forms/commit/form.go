@@ -2,11 +2,11 @@ package commit
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/Nie-Mand/cccli/internal/core"
 	"github.com/Nie-Mand/cccli/internal/core/domain"
 	"github.com/charmbracelet/huh"
+	"github.com/charmbracelet/log"
 )
 
 type CommitForm struct {
@@ -18,6 +18,7 @@ type CommitForm struct {
 
 	core.CommitTypeGateway
 	core.CommitEmojiGateway
+	core.ChangedFilesGateway
 }
 
 func NewCommitForm(opts ...CommitFormOption) (*CommitForm, error) {
@@ -37,6 +38,10 @@ func NewCommitForm(opts ...CommitFormOption) (*CommitForm, error) {
 
 	if f.CommitTypeGateway == nil {
 		return nil, errors.New("CommitTypeGateway is required")
+	} else if f.CommitEmojiGateway == nil {
+		return nil, errors.New("CommitEmojiGateway is required")
+	} else if f.ChangedFilesGateway == nil {
+		return nil, errors.New("ChangedFilesGateway is required")
 	}
 
 	f.Form = f.makeForm()
@@ -56,13 +61,17 @@ func (f *CommitForm) Run() error {
 	if !f.Confirm {
 		return errors.New("Commit aborted")
 	} else {
-		fmt.Println("Commit confirmed")
+
+		log.Info("Commit confirmed")
 	}
 	return nil
 }
 
 func (f *CommitForm) makeForm() *huh.Form {
 	return huh.NewForm(
+		huh.NewGroup(
+			f.makeFilesToCommitInput(),
+		),
 		huh.NewGroup(
 			f.makeCommitTypeInput(),
 		),
@@ -86,5 +95,11 @@ func WithCommitTypeGateway(g core.CommitTypeGateway) func(*CommitForm) {
 func WithCommitEmojiGateway(g core.CommitEmojiGateway) func(*CommitForm) {
 	return func(f *CommitForm) {
 		f.CommitEmojiGateway = g
+	}
+}
+
+func WithChangedFilesGateway(g core.ChangedFilesGateway) func(*CommitForm) {
+	return func(f *CommitForm) {
+		f.ChangedFilesGateway = g
 	}
 }

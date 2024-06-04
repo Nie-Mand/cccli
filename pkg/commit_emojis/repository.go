@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"os"
 
+	"github.com/charmbracelet/log"
+
 	"github.com/Nie-Mand/cccli/internal/core/domain"
 )
 
@@ -17,7 +19,8 @@ func NewCommitEmojiRepository() *CommitEmojiRepository {
 	err := emojis.load()
 
 	if err != nil {
-		emojis.list = []domain.CommitEmoji{}
+		log.Error(err)
+		return nil
 	}
 
 	return emojis

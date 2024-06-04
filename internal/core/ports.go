@@ -11,3 +11,7 @@ type CommitEmojiGateway interface {
 	List() []domain.CommitEmoji
 	FindById(id string) domain.CommitEmoji
 }
+
+type ChangedFilesGateway interface {
+	List() []string
+}
