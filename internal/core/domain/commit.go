@@ -7,5 +7,5 @@ type Commit struct {
 }
 
 func (c *Commit) String() string {
-	return c.CommitType.Id + ": " + c.CommitMessage
+	return c.CommitType.Id + ": " + c.CommitEmoji.Code + " " + c.CommitMessage
 }

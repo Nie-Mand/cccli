@@ -17,12 +17,18 @@ type CommitForm struct {
 	Form *huh.Form
 
 	core.CommitTypeGateway
+	core.CommitEmojiGateway
 }
 
 func NewCommitForm(opts ...CommitFormOption) (*CommitForm, error) {
 	f := &CommitForm{
 		Confirm: true,
-		Commit:  domain.Commit{},
+		Commit: domain.Commit{
+			CommitType: domain.CommitType{
+				Id: "",
+			},
+			CommitMessage: "",
+		},
 	}
 
 	for _, opt := range opts {
@@ -63,6 +69,9 @@ func (f *CommitForm) makeForm() *huh.Form {
 		huh.NewGroup(
 			f.makeCommitMessageInput(),
 		),
+		huh.NewGroup(
+			f.makeCommitEmojiInput(),
+		),
 	)
 }
 
@@ -71,5 +80,11 @@ type CommitFormOption func(*CommitForm)
 func WithCommitTypeGateway(g core.CommitTypeGateway) func(*CommitForm) {
 	return func(f *CommitForm) {
 		f.CommitTypeGateway = g
+	}
+}
+
+func WithCommitEmojiGateway(g core.CommitEmojiGateway) func(*CommitForm) {
+	return func(f *CommitForm) {
+		f.CommitEmojiGateway = g
 	}
 }

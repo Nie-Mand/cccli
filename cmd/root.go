@@ -5,9 +5,11 @@ import (
 	"log"
 	"os"
 
+	commitemojis "github.com/Nie-Mand/cccli/pkg/commit_emojis"
 	committypes "github.com/Nie-Mand/cccli/pkg/commit_types"
 
 	"github.com/Nie-Mand/cccli/internal/forms/commit"
+	"github.com/Nie-Mand/cccli/internal/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -18,6 +20,7 @@ var rootCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		form, err := commit.NewCommitForm(
 			commit.WithCommitTypeGateway(committypes.NewCommitTypeRepository()),
+			commit.WithCommitEmojiGateway(commitemojis.NewCommitEmojiRepository()),
 		)
 
 		if err != nil {
@@ -29,7 +32,13 @@ var rootCmd = &cobra.Command{
 			log.Fatal(err)
 		}
 
-		fmt.Println(form.Commit.String())
+		err = utils.Commit(form.Commit.String())
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		fmt.Println("Commit successful")
 
 		os.Exit(0)
 	},
